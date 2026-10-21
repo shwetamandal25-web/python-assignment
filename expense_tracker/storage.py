@@ -1,28 +1,30 @@
 import csv
 
-def save_expenses():
-    with open("expense.csv", "w", newline="") as file:
+
+def save_expenses(expenses):
+    with open("expenses.csv", "w", newline="") as file:
         writer = csv.writer(file)
+
         writer.writerow(["Item", "Amount"])
-        writer.writerow(["chips", 200])
-        writer.writerow(["mobile", 45000])
-        writer.writerow(["daal", 300])
-        writer.writerow(["rice", 400])
-        writer.writerow(["tea", 50])
 
-    print("expense data saved successfully")
+        for expense in expenses:
+            writer.writerow(expense)
 
 
+def load_expenses():
+    expenses = []
 
-    
-      
-    
-    
-    
-    
-    
-    
-    
-    
-    
-# def load_expenses():
+    try:
+        with open("expenses.csv", "r") as file:
+            reader = csv.DictReader(file)
+
+            for row in reader:
+                item = row["Item"]
+                amount = int(row["Amount"])
+
+                expenses.append((item, amount))
+
+    except FileNotFoundError:
+        print("No previous expense file found.")
+
+    return expenses
